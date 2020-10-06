@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 @Controller
 public class ApplicationUserController {
@@ -29,12 +32,18 @@ public class ApplicationUserController {
                 String firstName,
                 String lastName,
                 long socialSecurity,
-                long dob,
-                String bio) {
+                String dob,
+                String bio) throws ParseException {
+
+        dob = dob.substring(0, 10);
+        java.util.Date dateUtilDate = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+
+        Date sqlDate = new java.sql.Date(dateUtilDate.getTime());
+
 
         password = passwordEncoder.encode(password);
 
-        ApplicationUser newUser = new ApplicationUser(username, password, firstName, lastName, socialSecurity, dob, bio);
+        ApplicationUser newUser = new ApplicationUser(username, password, firstName, lastName, socialSecurity, sqlDate, bio);
 
         applicationUserRepository.save(newUser);
 

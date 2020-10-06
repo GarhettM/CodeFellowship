@@ -22,12 +22,12 @@ public class ApplicationUser implements UserDetails {
     String firstName;
     String lastName;
     long socialSecurity;
-    long dob;
+    java.sql.Date dob;
     String bio;
 
     public ApplicationUser() {};
 
-    public ApplicationUser(String username, String password, String firstName, String lastName, long socialSecurity, long dob, String bio) {
+    public ApplicationUser(String username, String password, String firstName, String lastName, long socialSecurity, java.sql.Date dob, String bio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -59,7 +59,7 @@ public class ApplicationUser implements UserDetails {
 
     public long getSocialSecurity() { return socialSecurity; }
 
-    public long getDob() { return dob; }
+    public java.sql.Date getDob() { return dob; }
 
     public String getBio() { return bio; }
 
