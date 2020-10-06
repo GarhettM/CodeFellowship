@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+    <h1>you have signed in</h1>
+
+    <h4>Below is all the dirt we have on you.</h4>
+
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Social Security Number</th>
+            <th>DOB</th>
+            <th>User Name</th>
+            <th>Bio</th>
+        </tr>
+        <tr>
+            <td th:text="${userStuff.firstName}"></td>
+            <td th:text="${userStuff.lastName}"></td>
+            <td th:text="${userStuff.socialSecurity}"></td>
+            <td th:text="${userStuff.dob}"></td>
+            <td th:text="${userStuff.username}"></td>
+            <td th:text="${userStuff.bio}"></td>
+        </tr>
+
+    </table>
+    <br>
+    <a href="/logout">Logout!</a>
+</body>
+</html>
