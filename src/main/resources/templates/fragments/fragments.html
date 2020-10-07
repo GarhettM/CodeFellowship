@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+
+
+
+
+<header>
+    <nav>
+        <p th:if="${principal}" th:text="'Whats up ' + ${principal.getName()} + '!'"></p>
+        <a th:if="${principal}" href="/logout">Logout</a>
+        <a th:if="${principal}" href="/myprofile">Go to Profile</a>
+    </nav>
+</header>
+<body>
+    <div th:if="${principal}">
+        <form action="/user" method="post">
+            <input type="text" name="findName">
+            <input type="submit" value="Click to Find">
+        </form>
+    </div>
+</body>
+</html>

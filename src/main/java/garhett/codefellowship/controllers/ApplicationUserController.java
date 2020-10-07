@@ -2,6 +2,8 @@ package garhett.codefellowship.controllers;
 
 import garhett.codefellowship.models.user.ApplicationUser;
 import garhett.codefellowship.models.user.ApplicationUserRepository;
+import garhett.codefellowship.models.user.MessagePost;
+import garhett.codefellowship.models.user.MessagePostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import java.security.Principal;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 @Controller
 public class ApplicationUserController {
@@ -23,7 +26,16 @@ public class ApplicationUserController {
     ApplicationUserRepository applicationUserRepository;
 
     @Autowired
+    MessagePostRepository messagePostRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @PostMapping("/user")
+    public RedirectView findUser(String findName, Principal principal) {
+
+        return new RedirectView("/user/" + findName);
+    }
 
     @PostMapping("/signup")
     public RedirectView makeNewUser(
@@ -50,13 +62,29 @@ public class ApplicationUserController {
         return new RedirectView("/login");
     }
 
-    @GetMapping("/user")
-    public String showUser(Model userInfo, Principal principal) {
+    @GetMapping("/myprofile")
+    public RedirectView showUser(Principal principal) {
+        return new RedirectView("/myprofile/" + principal.getName());
+    }
 
+    @GetMapping("/myprofile/{username}")
+    public String showUserForReal(@PathVariable String username, Model userInfo, Principal principal)    {
         ApplicationUser oldUser = applicationUserRepository.findByUsername(principal.getName());
-
         userInfo.addAttribute("userStuff", oldUser);
-        System.out.println(oldUser.toString());
+        System.out.println(oldUser.message.size());
+        if(oldUser == null) {
+            userInfo.addAttribute("userNotFound", true);
+        }
+        return "myprofile";
+    }
+
+    @GetMapping("/user/{username}")
+    public String showFoundUser(@PathVariable String username, Model m, Principal principal) {
+        System.out.println(username);
+        ApplicationUser oldUser = applicationUserRepository.findByUsername(username);
+        System.out.println(oldUser.message.size());
+        m.addAttribute("userInfo", oldUser.message);
+        System.out.println(oldUser);
         return "user";
     }
 

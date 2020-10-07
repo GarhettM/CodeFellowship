@@ -2,10 +2,21 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Garhett's Talk Channel</title>
 </head>
 <body>
-    <h1 th:if="${principal}" th:text="${userInfo.username + 's activity!'"></h1>
+    <h1>Talk here my People!</h1>
+
+    <br>
+    <a href="/">Back to Home!</a>
+    <br>
+
+    <h4>Use the field below to make a post.</h4>
+
+    <form action="/message" method="post">
+        <input type="text" name="message">
+        <input type="submit" value="Holla At ME">
+    </form>
     <br>
     <br>
     <table>
@@ -14,7 +25,7 @@
             <th>Username:</th>
             <th>Message:</th>
         </tr>
-        <tr th:if="${userInfo}" th:each="message : ${userInfo}">
+        <tr th:if="${messages}" th:each="message : ${messages}">
             <td th:text="${message.timeStamp}"></td>
             <td th:text="${message.username}"></td>
             <td th:text="${message.message}"></td>
