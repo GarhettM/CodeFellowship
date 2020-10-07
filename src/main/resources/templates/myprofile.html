@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+</head>
+<body>
+    <h1 th:if="${userStuff}" th:text="${userStuff.username}"></h1>
+    <h1 th:unless="${userStuff}">User Not found!</h1>
+
+    <h4>Below is all the dirt we have on you.</h4>
+
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Not Your Social Security Number</th>
+            <th>DOB</th>
+            <th>Bio</th>
+        </tr>
+        <tr th:if="${userStuff}">
+            <td th:text="${userStuff.firstName}"></td>
+            <td th:text="${userStuff.lastName}"></td>
+            <td th:text="${userStuff.socialSecurity}"></td>
+            <td th:text="${userStuff.dob}"></td>
+            <td th:text="${userStuff.bio}"></td>
+        </tr>
+
+    </table>
+    <br>
+    <a href="/">Home!</a>
+    <a href="/logout">Logout!</a>
+    <br>
+    <br>
+
+    <h3 th:if="${userStuff}" th:text="'Forum Activity for ' + ${userStuff.username}"></h3>
+    <table>
+        <tr>
+            <th>Time Stamp:</th>
+            <th>Username:</th>
+            <th>Message:</th>
+        </tr>
+        <tr th:if="${userStuff}" th:each="message : ${userStuff.message}">
+            <td th:text="${message.timeStamp}"></td>
+            <td th:text="${message.username}"></td>
+            <td th:text="${message.message}"></td>
+
+        </tr>
+
+
+    </table>
+</body>
+</html>

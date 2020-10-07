@@ -4,11 +4,11 @@ package garhett.codefellowship.models.user;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -22,12 +22,12 @@ public class ApplicationUser implements UserDetails {
     String firstName;
     String lastName;
     long socialSecurity;
-    long dob;
+    java.sql.Date dob;
     String bio;
 
     public ApplicationUser() {};
 
-    public ApplicationUser(String username, String password, String firstName, String lastName, long socialSecurity, long dob, String bio) {
+    public ApplicationUser(String username, String password, String firstName, String lastName, long socialSecurity, java.sql.Date dob, String bio) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -36,6 +36,10 @@ public class ApplicationUser implements UserDetails {
         this.dob = dob;
         this.bio = bio;
     }
+
+    @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
+    public List<MessagePost> message = new ArrayList<MessagePost>();
+    public Date timeStamp = new Date(System.currentTimeMillis());
 
 
     @Override
@@ -59,7 +63,7 @@ public class ApplicationUser implements UserDetails {
 
     public long getSocialSecurity() { return socialSecurity; }
 
-    public long getDob() { return dob; }
+    public java.sql.Date getDob() { return dob; }
 
     public String getBio() { return bio; }
 

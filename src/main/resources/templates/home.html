@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
@@ -7,6 +7,8 @@
 
 <header>
     <h1>This is the security side of the site!</h1>
+    <br>
+    <div th:if="${principal}" th:replace="fragments/fragments :: header"></div>
 </header>
 <br>
 <br>
@@ -15,10 +17,19 @@
         Welcome to <span>Garhett's</span> top secret super secure website.
     </p>
     <br>
-    <a href="/login">Click here to login.</a>
+    <div th:if="${principal == null}">
+        <a href="/login">Click here to login.</a>
+        <br>
+        <a href="/signup">Click here to sign up.</a>
+    </div>
     <br>
-    <a href="/signup">Click here to sign up.</a>
     <br>
-    <a href="/user">Click here for your info</a>
+    <div th:if="${principal}" th:replace="fragments/fragments :: div"></div>
+    <br>
+
+    <a th:if="${principal}" href="/forum">Enter the forum at your own risk!</a>
+
+
+
 </body>
 </html>
