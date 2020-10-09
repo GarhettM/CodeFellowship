@@ -14,9 +14,11 @@
 
 "/user/{username}" : This route will show the username that was searched for and their forum activity. 
 
+"/feed/{username}" : This routes shows the messages that the people you follow create in the forum. This uses the ManyToMany relational database relationship. 
+
 ### Database
 
-This application uses SQL Relational database. The application uses two tables for users, and a relational database "ManyToOne" for message posts that correspond with the user profile stored in the user database. The forum pulls all the entries for display from the message database, and the user/myprofile routes pull from the user database for user specific messages.
+This application uses SQL Relational database. The application uses two tables for users, and a relational database "ManyToOne", and "ManyToMany" for message posts that correspond with the user profile stored in the user database. The forum pulls all the entries for display from the message database, and the user/myprofile routes pull from the user database for user specific messages.
 
 ### How to use
 
