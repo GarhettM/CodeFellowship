@@ -6,8 +6,6 @@
 </head>
 
 <header>
-    <h1>This is the security side of the site!</h1>
-    <br>
     <div th:if="${principal}" th:replace="fragments/fragments :: header"></div>
 </header>
 <br>
@@ -28,6 +26,7 @@
     <br>
 
     <a th:if="${principal}" href="/forum">Enter the forum at your own risk!</a>
+    <br>
 
 
 

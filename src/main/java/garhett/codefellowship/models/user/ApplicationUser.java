@@ -5,10 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -16,6 +13,18 @@ public class ApplicationUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "followTable",
+            joinColumns = {@JoinColumn(name = "following")},
+            inverseJoinColumns = {@JoinColumn(name = "follower")}
+            )
+
+            public Set<ApplicationUser> userFollowing = new HashSet<>();
+
+    @ManyToMany(mappedBy = "userFollowing")
+            public Set<ApplicationUser> userFollowers = new HashSet<>();
 
     String username;
     String password;
@@ -38,7 +47,7 @@ public class ApplicationUser implements UserDetails {
     }
 
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
-    public List<MessagePost> message = new ArrayList<MessagePost>();
+    public List<MessagePost> message = new ArrayList<>();
     public Date timeStamp = new Date(System.currentTimeMillis());
 
 

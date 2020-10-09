@@ -4,11 +4,22 @@
     <meta charset="UTF-8">
     <title>Garhett's Talk Channel</title>
 </head>
+<header>
+    <div th:if="${principal}" th:replace="fragments/fragments :: header"></div>
+</header>
 <body>
     <h1>Talk here my People!</h1>
 
     <br>
-    <a href="/">Back to Home!</a>
+    <form th:if="${users}" action="/follower" method="post">
+        <input type="hidden" name="username">
+        <label for="drop">
+            <select name="drop" id="drop">
+                <option th:each="user : ${users}" th:if="${principal.getName() != user.username}" th:text="${user.username}"></option>
+            </select>
+        </label>
+        <input type="submit">
+    </form>
     <br>
 
     <h4>Use the field below to make a post.</h4>

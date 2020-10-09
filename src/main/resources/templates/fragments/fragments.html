@@ -10,8 +10,12 @@
 
 
 <header>
+    <h1>Garhett's Social Site!</h1>
+    <br>
+    <p th:if="${principal}" th:text="${principal.getName()} + ' is signed in.'"></p>
+    <br>
     <nav>
-        <p th:if="${principal}" th:text="'Whats up ' + ${principal.getName()} + '!'"></p>
+        <a th:if="${principal}" href="/">Home</a>
         <a th:if="${principal}" href="/logout">Logout</a>
         <a th:if="${principal}" href="/myprofile">Go to Profile</a>
     </nav>

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>User</title>
 </head>
+<header>
+    <div th:if="${principal}" th:replace="fragments/fragments :: header"></div>
+</header>
 <body>
     <h1 th:if="${userStuff}" th:text="${userStuff.username}"></h1>
     <h1 th:unless="${userStuff}">User Not found!</h1>
@@ -28,12 +31,10 @@
 
     </table>
     <br>
-    <a href="/">Home!</a>
-    <a href="/logout">Logout!</a>
     <br>
     <br>
 
-    <h3 th:if="${userStuff}" th:text="'Forum Activity for ' + ${userStuff.username}"></h3>
+    <h3>Forum Activity</h3>
     <table>
         <tr>
             <th>Time Stamp:</th>
@@ -44,7 +45,6 @@
             <td th:text="${message.timeStamp}"></td>
             <td th:text="${message.username}"></td>
             <td th:text="${message.message}"></td>
-
         </tr>
 
 

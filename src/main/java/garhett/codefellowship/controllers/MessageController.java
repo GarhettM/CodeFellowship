@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
+
 import java.security.Principal;
 import java.util.ArrayList;
 
@@ -41,9 +42,12 @@ public class MessageController {
     }
 
     @GetMapping("/forum")
-    public String showAllMessages(Model allMessages) {
+    public String showAllMessages(Model allMessages, Principal principal) {
+        ArrayList<ApplicationUser> allUsers = (ArrayList<ApplicationUser>) applicationUserRepository.findAll();
         ArrayList<MessagePost> allOfThem = (ArrayList<MessagePost>) messagePostRepository.findAll();
         allMessages.addAttribute("messages", allOfThem);
+        allMessages.addAttribute("principal", principal);
+        allMessages.addAttribute("users", allUsers);
         return "forum";
     }
 }
