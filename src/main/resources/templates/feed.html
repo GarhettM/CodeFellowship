@@ -8,16 +8,18 @@
     <div th:if="${principal}" th:replace="fragments/fragments :: header"></div>
 </header>
 <body>
-    <h1 th:if="${principal}" th:text="${userInfo.username + 's activity!'"></h1>
+    <br>
+    <h3>Your Activity Feed!</h3>
     <br>
     <br>
+
     <table>
         <tr>
             <th>Time Stamp:</th>
             <th>Username:</th>
             <th>Message:</th>
         </tr>
-        <tr th:if="${userInfo}" th:each="message : ${userInfo}">
+        <tr th:if="${followers}" th:each="message : ${followers}">
             <td th:text="${message.timeStamp}"></td>
             <td th:text="${message.username}"></td>
             <td th:text="${message.message}"></td>

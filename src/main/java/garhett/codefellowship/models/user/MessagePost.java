@@ -17,9 +17,9 @@ public class MessagePost {
     @ManyToOne
     public ApplicationUser applicationUser;
 
-    String message;
-    String username;
-    Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
+    public String message;
+    public String username;
+    public Timestamp timeStamp = new Timestamp(System.currentTimeMillis());
 
     public MessagePost() {};
 

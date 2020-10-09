@@ -4,7 +4,9 @@ import garhett.codefellowship.models.user.ApplicationUser;
 import garhett.codefellowship.models.user.ApplicationUserRepository;
 import garhett.codefellowship.models.user.MessagePost;
 import garhett.codefellowship.models.user.MessagePostRepository;
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,9 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 @Controller
 public class ApplicationUserController {
@@ -59,7 +64,23 @@ public class ApplicationUserController {
 
         applicationUserRepository.save(newUser);
 
-        return new RedirectView("/login");
+        return new RedirectView("/feed");
+    }
+
+    @PostMapping("/follower")
+    public RedirectView selectFollower(String drop, Principal principal) {
+        ApplicationUser signedin = applicationUserRepository.findByUsername(principal.getName());
+        ApplicationUser follower = applicationUserRepository.findByUsername(drop);
+
+        System.out.println(drop);
+        System.out.println(follower.toString());
+        signedin.userFollowing.add(follower);
+        follower.userFollowers.add(signedin);
+
+        applicationUserRepository.save(signedin);
+        applicationUserRepository.save(follower);
+
+        return new RedirectView("/forum");
     }
 
     @GetMapping("/myprofile")
@@ -71,7 +92,8 @@ public class ApplicationUserController {
     public String showUserForReal(@PathVariable String username, Model userInfo, Principal principal)    {
         ApplicationUser oldUser = applicationUserRepository.findByUsername(principal.getName());
         userInfo.addAttribute("userStuff", oldUser);
-        System.out.println(oldUser.message.size());
+        userInfo.addAttribute("principal", principal);
+
         if(oldUser == null) {
             userInfo.addAttribute("userNotFound", true);
         }
@@ -82,7 +104,6 @@ public class ApplicationUserController {
     public String showFoundUser(@PathVariable String username, Model m, Principal principal) {
         System.out.println(username);
         ApplicationUser oldUser = applicationUserRepository.findByUsername(username);
-        System.out.println(oldUser.message.size());
         m.addAttribute("userInfo", oldUser.message);
         System.out.println(oldUser);
         return "user";
@@ -93,4 +114,28 @@ public class ApplicationUserController {
 
     @GetMapping("/signup")
     public String showSignUp() { return "signup"; }
+
+    @GetMapping("/feed")
+    public RedirectView showFeed(Principal principal) { return new RedirectView("/feed/" + principal.getName()); }
+
+    @GetMapping("/feed/{username}")
+    public String showFeedReal(@PathVariable String username, Principal principal, Model m) {
+
+        ApplicationUser user = applicationUserRepository.findByUsername(principal.getName());
+        Iterator<ApplicationUser> value = user.userFollowing.iterator();
+        ArrayList<MessagePost> followMessages = new ArrayList<>();
+
+        while(value.hasNext()) {
+            ApplicationUser temp = value.next();
+            ListIterator<MessagePost> posts = temp.message.listIterator();
+
+            while(posts.hasNext()) {
+                followMessages.add(posts.next());
+            }
+        }
+
+        m.addAttribute("followers", followMessages);
+        m.addAttribute("principal", principal);
+        return ("feed");
+    }
 }
